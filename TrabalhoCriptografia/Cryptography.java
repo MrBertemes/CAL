@@ -14,24 +14,20 @@ public class Cryptography {
 
     }
 
-    public void keyGenerator() {
-        System.out.println("i am here");
+    public void keyGenerator(int bitlen) {
+        
         BigInteger n, d, e;
+        BigInteger p = generateRandomPrime(bitlen);
+        BigInteger q = generateRandomPrime(bitlen);
 
-        BigInteger p = new BigInteger(generateRandomPrime());
-        BigInteger q = new BigInteger(generateRandomPrime());
-
-        // Compute n = p * q
         n = p.multiply(q);
-
-        // Compute a função totiente phi(n) = (p -1) (q -1)
         BigInteger m = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
 
-        // Escolha um inteiro "e" , 1 < "e" < phi(n) , "e" e phi(n) sejam primos entre
-        // si.
+        // Escolha um inteiro "e" , 1 < "e" < phi(n) , "e" e phi(n) sejam primos entre si.
         e = new BigInteger("3");
-        while (m.gcd(e).intValue() > 1)
+        while (m.gcd(e).intValue() > 1){
             e = e.add(new BigInteger("2"));
+        }
 
         // d seja inverso multiplicativo de "e"
         d = e.modInverse(m);
@@ -44,40 +40,39 @@ public class Cryptography {
 
     }
 
-    private String generateRandomPrime() {
+    private BigInteger generateRandomPrime(int bitlen) {
         boolean prime = false;
-        long numberFound = 0;
+        BigInteger numberFound = BigInteger.ZERO;
 
-        while (!prime) {
-            numberFound = rnd.nextLong();
-            prime = primalityTest(numberFound);
-        }
-        BigInteger bigNum = new BigInteger(Long.toString(numberFound));
-        return Long.toString(numberFound);
+        // while (!prime) {
+        //     numberFound = randomCandidate(bitlen);
+        //     prime = primalityTest(numberFound);
+        // }
+        
+        BigInteger bigNum = randomCandidate(bitlen);
+        return bigNum;
     }
 
-    private boolean primalityTest(long num) {// crivo de erastoteles
-        boolean isPrime = false;
-        if (num < 2) {
-            return false;
-        }
-        if (num == 2) {
-            return true;
+    // private boolean primalityTest(BigInteger num) {// Miller Rabin
+      
+    // }
+
+    private BigInteger randomCandidate(int bitlen){
+        BigInteger candidate;
+        int n,i;
+        String bit = "1";
+        int bits[] = new int[bitlen-1];
+        bits[0] = 1;
+
+        for(i= 1; i< bitlen - 1; i++){
+            n = rnd.nextInt(2);
+            bits[i] = n;
+            bit = Integer.toString(n) + bit;
         }
 
-        int n = (int) num;
-        boolean prime[] = new boolean[n + 1];
-        for (int i = 2; i <= n; i++) {
-            prime[i] = true;
-        }
-        for (int i = 2; i <= n; i++) {
-            for (int j = i; i * j <= n; j++) {
-                prime[i * j] = false;
-            }
-        }
-        if (prime[n]) {
-            isPrime = true;
-        }
-        return isPrime;
+        bit  = "1" + bit;
+        bits[bitlen-1] = 1;
+        candidate = new BigInteger(bit);
+        return candidate;
     }
 }
