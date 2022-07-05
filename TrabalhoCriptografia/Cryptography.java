@@ -4,21 +4,35 @@ import java.io.*;
 
 public class Cryptography {
     public static Random rnd = new Random();
+    BigInteger n, e, d, p, q;
 
-    public static void encode() {
+    public void criptic(int bitlen){
+        keyGenerator(bitlen);
+        try {
+            readFileEncrypt("/home/admin/Documents/Braia/CAL/CAL/", "originalFile.txt", 
+                "encryptedFile.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+    }
 
+    private BigInteger encode(BigInteger m) {
+        BigInteger c;
+
+        c = m.modPow(e, n);
+
+        return c;
     }
 
     public static void decode() {
 
     }
 
-    public void keyGenerator(int bitlen) {
+    private void keyGenerator(int bitlen) {
 
-        BigInteger n, d, e;
-        BigInteger p = generateRandomPrime(bitlen);
-        BigInteger q = generateRandomPrime(bitlen);
+        p = generateRandomPrime(bitlen);
+        q = generateRandomPrime(bitlen);
 
         n = p.multiply(q);
         BigInteger m = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
@@ -32,13 +46,6 @@ public class Cryptography {
 
         // d seja inverso multiplicativo de "e"
         d = e.modInverse(m);
-
-        System.out.println("p:" + p);
-        System.out.println("q:" + q);
-        System.out.println("n:" + n);
-        System.out.println("e:" + e);
-        System.out.println("d:" + d);
-
     }
 
     private BigInteger generateRandomPrime(int bitlen) {
@@ -77,7 +84,8 @@ public class Cryptography {
         while(in.hasNextLine()){
             String line = in.nextLine();
             line = line +"\n";
-            out.write(line.getBytes());
+            BigInteger bigByte = new BigInteger(line.getBytes());
+            out.write(encode(bigByte).toByteArray());
         }
         out.close();
     }
