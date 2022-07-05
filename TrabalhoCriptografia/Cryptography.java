@@ -2,12 +2,11 @@ import java.util.*;
 import java.math.BigInteger;
 import java.io.*;
 
-//vou tomar cafe, volto logo
-
 public class Cryptography {
     public static Random rnd = new Random();
 
     public static void encode() {
+
 
     }
 
@@ -45,44 +44,41 @@ public class Cryptography {
     private BigInteger generateRandomPrime(int bitlen) {
         boolean prime = false;
         BigInteger numberFound = BigInteger.ZERO;
-        System.out.println("test");
 
         while (!prime) {
             numberFound = randomCandidate(bitlen);
             prime = Stuff.isPrime(numberFound, 10);
         }
 
-        BigInteger bigNum = randomCandidate(bitlen);
-        return bigNum;
+        return numberFound;
     }
 
     private BigInteger randomCandidate(int bitlen) {
         BigInteger candidate;
         int i;
         byte n;
-        // String bit = "1";
+        
         byte bits[] = new byte[bitlen];
         bits[0] = 1;
 
         for (i = 1; i < bitlen - 1; i++) {
             n = Byte.decode(Integer.toString(rnd.nextInt(2)));
             bits[i] = n;
-            // bit = Integer.toString(n) + bit;
         }
 
-        // bit = "1" + bit;
         bits[bitlen - 1] = 1;
         candidate = new BigInteger(bits);
         return candidate;
     }
 
-    // public void ReadFile(String pathName, String fileName) {
-    //     Scanner in = new Scanner(new FileReader("arq_01.txt"));
-    //     while (in.hasNextLine()) {
-    //         String line = scanner.nextLine();
-    //         System.out.println(line);
-    //     }
-
-    // }
-    
+    public void readFileEncrypt(String pathName, String orginalFile, String encryptedFile) throws IOException{
+        Scanner in = new Scanner(new FileReader(orginalFile));
+        FileOutputStream out = new FileOutputStream(encryptedFile);
+        while(in.hasNextLine()){
+            String line = in.nextLine();
+            line = line +"\n";
+            out.write(line.getBytes());
+        }
+        out.close();
+    }
 }

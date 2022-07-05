@@ -28,6 +28,7 @@ class Stuff {
 
         BigInteger four = new BigInteger("4");
         BigInteger three = new BigInteger("3");
+        BigInteger two = new BigInteger("2");
         // Corner cases
         if (n.compareTo(BigInteger.ONE) <= 0 || n.equals(four)) return false;
         if (n.compareTo(three) == 0) return true;
@@ -41,7 +42,7 @@ class Stuff {
             BigInteger divisor = new BigInteger("4").negate().add(n);
 
             // a = (numeroAleatorio % n - 4) + 2
-            BigInteger a = (BigInteger) ( dividend.mod(divisor)).add(BigInteger.TWO);
+            BigInteger a = (BigInteger) ( dividend.mod(divisor)).add(two);
         
             // nMinusOne = n - 1
             BigInteger nMinusOne =  BigInteger.ONE.negate().add(n);
@@ -51,7 +52,7 @@ class Stuff {
             k--;
         }
      
-            return true;
+        return true;
    }
 
 }
