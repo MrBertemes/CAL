@@ -6,11 +6,11 @@ public class Cryptography {
     public static Random rnd = new Random();
     BigInteger n, e, d, p, q;
 
-    public void criptic(int bitlen){
+    public void criptic(int bitlen) {
         keyGenerator(bitlen);
         try {
-            readFileEncrypt("/home/admin/Documents/Braia/CAL/CAL/", "originalFile.txt", 
-                "encryptedFile.txt");
+            readFileEncrypt("/home/admin/Documents/Braia/CAL/CAL/", "originalFile.txt",
+                    "encryptedFile.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -25,8 +25,13 @@ public class Cryptography {
         return c;
     }
 
-    public static void decode() {
+    private BigInteger decode(BigInteger c) {
+        BigInteger m;
+        BigInteger aux = new BigInteger("1");
 
+        m = c.modInverse((p.subtract(aux)).multiply(q.subtract(aux)));
+
+        return m;
     }
 
     private void keyGenerator(int bitlen) {
@@ -64,7 +69,7 @@ public class Cryptography {
         BigInteger candidate;
         int i;
         byte n;
-        
+
         byte bits[] = new byte[bitlen];
         bits[0] = 1;
 
@@ -78,15 +83,41 @@ public class Cryptography {
         return candidate;
     }
 
-    public void readFileEncrypt(String pathName, String orginalFile, String encryptedFile) throws IOException{
+    public void readFileEncrypt(String pathName, String orginalFile, String encryptedFile) throws IOException {
         Scanner in = new Scanner(new FileReader(orginalFile));
         FileOutputStream out = new FileOutputStream(encryptedFile);
-        while(in.hasNextLine()){
+        while (in.hasNextLine()) {
             String line = in.nextLine();
-            line = line +"\n";
+            line = line + "\n";
             BigInteger bigByte = new BigInteger(line.getBytes());
             out.write(encode(bigByte).toByteArray());
         }
         out.close();
     }
+
+    private Object bruteForce(BigInteger number) {
+        int count = 0;
+        Object valuesResult[] = new Object[3];
+        BigInteger a = new BigInteger("1");
+        BigInteger b = new BigInteger("1");
+        BigInteger sum = new BigInteger("2");
+        BigInteger result = new BigInteger("1");
+        while (number != result) {
+            if (a.compareTo(number.sqrt()) < 1) {
+                a.add(sum);
+            } else {
+                b.add(sum);
+            }
+            result = a.multiply(b);
+            count++;
+        }
+
+        valuesResult[0] = a;
+        valuesResult[1] = b;
+        valuesResult[2] = count;
+
+        return valuesResult;
+
+    }
+
 }
