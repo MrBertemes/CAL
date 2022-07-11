@@ -9,5 +9,5 @@ public class Main {
         Cryptography cripto = new Cryptography();
         //cripto.keyGenerator(64);
         cripto.criptic(64);
-    }
+}
 }

@@ -102,25 +102,21 @@ public class Cryptography {
         BigInteger b = new BigInteger("1");
         BigInteger sum = new BigInteger("2");
         BigInteger result = new BigInteger("1");
-        while (number != result) {
-            while(a.compareTo(number.sqrt()) < 1) {
-                a.add(sum);
-                while(b.compareTo(number.sqrt()) < 1) {
-                    count++;
-                    result = a.multiply(b);
-                    if(result==number){
-                        valuesResult[0] = a;
-                        valuesResult[1] = b;
-                        valuesResult[2] = count;
-                        return valuesResult;
-                    }
-                    b.add(sum);
+        while (a.compareTo(number.sqrt()) < 1) {
+            a.add(sum);
+            while (b.compareTo(number.sqrt()) < 1) {
+                count++;
+                result = a.multiply(b);
+                if (result == number) {
+                    valuesResult[0] = a;
+                    valuesResult[1] = b;
+                    valuesResult[2] = count;
+                    return valuesResult;
                 }
-            count++;
+                b.add(sum);
+            }
         }
 
-
-    }
     }
 
 }
