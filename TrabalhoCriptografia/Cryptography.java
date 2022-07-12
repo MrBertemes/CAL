@@ -7,10 +7,18 @@ public class Cryptography {
     BigInteger n, e, d, p, q;
 
     public void criptic(int bitlen) {
+
         keyGenerator(bitlen);
         try {
             readFileEncrypt("/home/admin/Documents/Braia/CAL/CAL/", "originalFile.txt",
                     "encryptedFile.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            readFileDecrypt("/home/admin/Documents/Braia/CAL/CAL/", "encryptedFile.txt",
+                    "decryptedFile.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -27,10 +35,9 @@ public class Cryptography {
 
     private BigInteger decode(BigInteger c) {
         BigInteger m;
-        BigInteger aux = new BigInteger("1");
 
-        m = c.modInverse((p.subtract(aux)).multiply(q.subtract(aux)));
-
+        m = c.modPow(d, n);
+ 
         return m;
     }
 
@@ -40,17 +47,20 @@ public class Cryptography {
         q = generateRandomPrime(bitlen);
 
         n = p.multiply(q);
-        BigInteger m = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
+        BigInteger phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
 
         // Escolha um inteiro "e" , 1 < "e" < phi(n) , "e" e phi(n) sejam primos entre
         // si.
         e = new BigInteger("3");
-        while (m.gcd(e).intValue() > 1) {
+        while (phi.gcd(e).intValue() > 1) {
             e = e.add(new BigInteger("2"));
         }
 
         // d seja inverso multiplicativo de "e"
-        d = e.modInverse(m);
+        d = e.modInverse(phi);
+        // System.out.println("p:" + p );
+        // System.out.println("q:" + q );
+        // System.out.println("e:" + e );
     }
 
     private BigInteger generateRandomPrime(int bitlen) {
@@ -88,10 +98,23 @@ public class Cryptography {
         FileOutputStream out = new FileOutputStream(encryptedFile);
         while (in.hasNextLine()) {
             String line = in.nextLine();
-            line = line + "\n";
             BigInteger bigByte = new BigInteger(line.getBytes());
             out.write(encode(bigByte).toByteArray());
         }
+        out.close();
+    }
+
+    public void readFileDecrypt(String pathName, String encryptedFile, String decryptedFile) throws IOException {
+        Scanner in = new Scanner(new FileReader(encryptedFile));
+        FileOutputStream out = new FileOutputStream(decryptedFile);
+        byte line[] = new byte[500];
+        int i = 0; 
+        while (in.hasNextByte()) {
+            line[i] = in.nextByte();
+            i += 1;         
+        }
+        BigInteger bigByte = new BigInteger(line);
+        System.out.println((char) decode(bigByte).byteValue());
         out.close();
     }
 
@@ -102,9 +125,9 @@ public class Cryptography {
         BigInteger b = new BigInteger("1");
         BigInteger sum = new BigInteger("2");
         BigInteger result = new BigInteger("1");
-        while (a.compareTo(number.sqrt()) < 1) {
+        while (a.compareTo(number.pow(1/2) ) < 1) {
             a.add(sum);
-            while (b.compareTo(number.sqrt()) < 1) {
+            while (b.compareTo(number.pow(1/2)) < 1) {
                 count++;
                 result = a.multiply(b);
                 if (result == number) {
@@ -116,7 +139,7 @@ public class Cryptography {
                 b.add(sum);
             }
         }
-
+        return valuesResult;
     }
 
 }
