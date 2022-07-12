@@ -99,7 +99,7 @@ public class Cryptography {
         while (in.hasNextLine()) {
             String line = in.nextLine();
             BigInteger bigByte = new BigInteger(line.getBytes());
-            out.write(encode(bigByte).toByteArray());
+            out.write(encode(bigByte).toString().getBytes());
         }
         out.close();
     }
@@ -107,14 +107,12 @@ public class Cryptography {
     public void readFileDecrypt(String pathName, String encryptedFile, String decryptedFile) throws IOException {
         Scanner in = new Scanner(new FileReader(encryptedFile));
         FileOutputStream out = new FileOutputStream(decryptedFile);
-        byte line[] = new byte[500];
-        int i = 0; 
-        while (in.hasNextByte()) {
-            line[i] = in.nextByte();
-            i += 1;         
+        String line;
+        while (in.hasNextLine()) {
+            line = in.nextLine();
+            BigInteger bigByte = new BigInteger(line);
+            out.write((decode(bigByte).toByteArray()));
         }
-        BigInteger bigByte = new BigInteger(line);
-        System.out.println((char) decode(bigByte).byteValue());
         out.close();
     }
 
