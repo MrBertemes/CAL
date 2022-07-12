@@ -4,7 +4,47 @@ import java.io.*;
 
 public class Cryptography {
     public static Random rnd = new Random();
-    BigInteger n, e, d, p, q;
+    private BigInteger n, e, d, p, q;
+
+    public BigInteger getN() {
+        return n;
+    }
+
+    public void setN(BigInteger n) {
+        this.n = n;
+    }
+
+    public BigInteger getE() {
+        return e;
+    }
+
+    public void setE(BigInteger e) {
+        this.e = e;
+    }
+
+    public BigInteger getD() {
+        return d;
+    }
+
+    public void setD(BigInteger d) {
+        this.d = d;
+    }
+
+    public BigInteger getP() {
+        return p;
+    }
+
+    public void setP(BigInteger p) {
+        this.p = p;
+    }
+
+    public BigInteger getQ() {
+        return q;
+    }
+
+    public void setQ(BigInteger q) {
+        this.q = q;
+    }
 
     public void criptic(int bitlen) {
 
@@ -43,21 +83,21 @@ public class Cryptography {
 
     private void keyGenerator(int bitlen) {
 
-        p = generateRandomPrime(bitlen);
-        q = generateRandomPrime(bitlen);
+        setP(generateRandomPrime(bitlen/2));
+        setQ(generateRandomPrime(bitlen/2));
 
-        n = p.multiply(q);
+        setN(p.multiply(q));
         BigInteger phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
 
         // Escolha um inteiro "e" , 1 < "e" < phi(n) , "e" e phi(n) sejam primos entre
         // si.
-        e = new BigInteger("3");
+        setE(new BigInteger("3"));
         while (phi.gcd(e).intValue() > 1) {
-            e = e.add(new BigInteger("2"));
+            setE(e.add(new BigInteger("2")));
         }
 
         // d seja inverso multiplicativo de "e"
-        d = e.modInverse(phi);
+        setD(e.modInverse(phi));
         // System.out.println("p:" + p );
         // System.out.println("q:" + q );
         // System.out.println("e:" + e );
@@ -79,7 +119,7 @@ public class Cryptography {
         BigInteger candidate;
         int i;
         byte n;
-
+        
         byte bits[] = new byte[bitlen];
         bits[0] = 1;
 
@@ -116,7 +156,7 @@ public class Cryptography {
         out.close();
     }
 
-    private Object bruteForce(BigInteger number) {
+    public Object bruteForce(BigInteger number) {
         int count = 0;
         Object valuesResult[] = new Object[3];
         BigInteger a = new BigInteger("1");
