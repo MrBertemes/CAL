@@ -1,6 +1,7 @@
 import java.util.*;
 import java.math.BigInteger;
 import java.io.*;
+import java.math.*;
 
 public class Cryptography {
     public static Random rnd = new Random();
@@ -164,23 +165,27 @@ public class Cryptography {
         BigInteger b = new BigInteger("3");
         BigInteger sum = new BigInteger("2");
         BigInteger result = new BigInteger("1");
-        while (a.compareTo(number.pow(1 / 2)) > -1) {
+        while (a.compareTo(number.sqrt()) == -1) {
             a = a.add(sum);
-            while (b.compareTo(number.pow(1 / 2)) > -1) {
-                count++;
-                result = a.multiply(b);
+            b = new BigInteger("3");
+            while (b.compareTo(number.sqrt()) == -1) {
                 if (result.compareTo(number) == 0) {
+                    System.out.println("yesssss");
                     valuesResult[0] = a;
                     valuesResult[1] = b;
                     valuesResult[2] = count;
                     return valuesResult;
                 }
                 b = b.add(sum);
+                count++;
+                result = a.multiply(b);
                 System.out.println(n);
                 System.out.println(result);
                 System.out.println(a);
                 System.out.println(b);
+                System.out.println(count);
                 System.out.println("------");
+
             }
         }
         return valuesResult;
