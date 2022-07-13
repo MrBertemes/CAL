@@ -50,18 +50,19 @@ public class Cryptography {
 
         keyGenerator(bitlen);
         try {
-            readFileEncrypt("/home/admin/Documents/Braia/CAL/CAL/", "originalFile.txt",
+            readFileEncrypt("/home/krischanski/Udesc/CAL/CAL/", "originalFile.txt",
                     "encryptedFile.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            readFileDecrypt("/home/admin/Documents/Braia/CAL/CAL/", "encryptedFile.txt",
+            readFileDecrypt("/home/krischanski/Udesc/CAL/CAL/", "encryptedFile.txt",
                     "decryptedFile.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        /// home/krischanski/Udesc/CAL/CAL/
 
     }
 
@@ -77,14 +78,14 @@ public class Cryptography {
         BigInteger m;
 
         m = c.modPow(d, n);
- 
+
         return m;
     }
 
     private void keyGenerator(int bitlen) {
 
-        setP(generateRandomPrime(bitlen/2));
-        setQ(generateRandomPrime(bitlen/2));
+        setP(generateRandomPrime(bitlen / 2));
+        setQ(generateRandomPrime(bitlen / 2));
 
         setN(p.multiply(q));
         BigInteger phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
@@ -119,7 +120,7 @@ public class Cryptography {
         BigInteger candidate;
         int i;
         byte n;
-        
+
         byte bits[] = new byte[bitlen];
         bits[0] = 1;
 
@@ -159,22 +160,27 @@ public class Cryptography {
     public Object bruteForce(BigInteger number) {
         int count = 0;
         Object valuesResult[] = new Object[3];
-        BigInteger a = new BigInteger("1");
-        BigInteger b = new BigInteger("1");
+        BigInteger a = new BigInteger("3");
+        BigInteger b = new BigInteger("3");
         BigInteger sum = new BigInteger("2");
         BigInteger result = new BigInteger("1");
-        while (a.compareTo(number.pow(1/2) ) < 1) {
-            a.add(sum);
-            while (b.compareTo(number.pow(1/2)) < 1) {
+        while (a.compareTo(number.pow(1 / 2)) > -1) {
+            a = a.add(sum);
+            while (b.compareTo(number.pow(1 / 2)) > -1) {
                 count++;
                 result = a.multiply(b);
-                if (result == number) {
+                if (result.compareTo(number) == 0) {
                     valuesResult[0] = a;
                     valuesResult[1] = b;
                     valuesResult[2] = count;
                     return valuesResult;
                 }
-                b.add(sum);
+                b = b.add(sum);
+                System.out.println(n);
+                System.out.println(result);
+                System.out.println(a);
+                System.out.println(b);
+                System.out.println("------");
             }
         }
         return valuesResult;
