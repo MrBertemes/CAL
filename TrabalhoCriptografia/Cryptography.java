@@ -1,7 +1,6 @@
 import java.util.*;
 import java.math.BigInteger;
 import java.io.*;
-import java.math.*;
 
 public class Cryptography {
     public static Random rnd = new Random();
@@ -51,14 +50,14 @@ public class Cryptography {
 
         keyGenerator(bitlen);
         try {
-            readFileEncrypt("/home/krischanski/Udesc/CAL/CAL/", "originalFile.txt",
+            readFileEncrypt("/home/Documents/Braia/CAL/CAL/", "originalFile.txt",
                     "encryptedFile.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            readFileDecrypt("/home/krischanski/Udesc/CAL/CAL/", "encryptedFile.txt",
+            readFileDecrypt("/home/Documents/Braia/CAL/CAL/", "encryptedFile.txt",
                     "decryptedFile.txt");
         } catch (IOException e) {
             e.printStackTrace();
@@ -117,21 +116,28 @@ public class Cryptography {
         return numberFound;
     }
 
-    private BigInteger randomCandidate(int bitlen) {
-        BigInteger candidate;
-        int i;
-        byte n;
-
-        byte bits[] = new byte[bitlen];
-        bits[0] = 1;
-
-        for (i = 1; i < bitlen - 1; i++) {
-            n = Byte.decode(Integer.toString(rnd.nextInt(2)));
-            bits[i] = n;
+    private static int randomNumber(){
+        return rnd.nextInt(2);
+    }
+    
+    private static BigInteger randomCandidate(int bitlen){
+        BigInteger candidate = new BigInteger("0");
+        BigInteger helper;
+        for(int i = 0; i < bitlen; i++){
+            if(i == 0 || i == bitlen - 1){
+                helper = new BigInteger("2");
+                helper = helper.pow(i);
+                candidate = candidate.add(helper);
+            }else {
+                if(randomNumber()==1){
+                 helper = new BigInteger("2");    
+                 helper = helper.pow(i);
+                }else{
+                 helper = new BigInteger("0");   
+                }
+                candidate = candidate.add(helper);
+            }
         }
-
-        bits[bitlen - 1] = 1;
-        candidate = new BigInteger(bits);
         return candidate;
     }
 
@@ -152,44 +158,12 @@ public class Cryptography {
         String line;
         while (in.hasNextLine()) {
             line = in.nextLine();
-            BigInteger bigByte = new BigInteger(line);
-            out.write((decode(bigByte).toByteArray()));
+            line.concat("\n");
+            BigInteger bigLine = new BigInteger(line);
+            out.write((decode(bigLine).toByteArray()));
         }
         out.close();
     }
-
-    // public Object bruteForce(BigInteger number) {
-    // int count = 0;
-    // Object valuesResult[] = new Object[3];
-    // BigInteger a = new BigInteger("3");
-    // BigInteger b = new BigInteger("3");
-    // BigInteger sum = new BigInteger("2");
-    // BigInteger result = new BigInteger("1");
-    // while (a.compareTo(number.sqrt()) == -1) {
-    // a = a.add(sum);
-    // b = new BigInteger("3");
-    // while (b.compareTo(number.sqrt()) == -1) {
-    // if (result.compareTo(number) == 0) {
-    // System.out.println("yesssss");
-    // valuesResult[0] = a;
-    // valuesResult[1] = b;
-    // valuesResult[2] = count;
-    // return valuesResult;
-    // }
-    // b = b.add(sum);
-    // count++;
-    // result = a.multiply(b);
-    // System.out.println(n);
-    // System.out.println(result);
-    // System.out.println(a);
-    // System.out.println(b);
-    // System.out.println(count);
-    // System.out.println("------");
-
-    // }
-    // }
-    // return valuesResult;
-    // }
 
     public Object bruteForce(BigInteger number) {
         int count = 0;
@@ -205,22 +179,18 @@ public class Cryptography {
             while (result.compareTo(number) < 1) {
 
                 if (result.compareTo(number) == 0) {
-                    System.out.println("yesssss");
                     valuesResult[0] = a;
                     valuesResult[1] = b;
                     valuesResult[2] = count;
+                    System.out.println("------------------");
+                    System.out.println(n+" = "+a+"*"+b);
+                    System.out.println("Achou em "+count+" iterações");
+                    System.out.println("------------------");
                     return valuesResult;
                 }
                 b = b.add(sum);
                 count++;
                 result = a.multiply(b);
-
-                System.out.println(n);
-                System.out.println(result);
-                System.out.println(a);
-                System.out.println(b);
-                System.out.println(count);
-                System.out.println("------");
 
             }
             a = a.add(sum);
