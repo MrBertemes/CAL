@@ -158,6 +158,39 @@ public class Cryptography {
         out.close();
     }
 
+    // public Object bruteForce(BigInteger number) {
+    // int count = 0;
+    // Object valuesResult[] = new Object[3];
+    // BigInteger a = new BigInteger("3");
+    // BigInteger b = new BigInteger("3");
+    // BigInteger sum = new BigInteger("2");
+    // BigInteger result = new BigInteger("1");
+    // while (a.compareTo(number.sqrt()) == -1) {
+    // a = a.add(sum);
+    // b = new BigInteger("3");
+    // while (b.compareTo(number.sqrt()) == -1) {
+    // if (result.compareTo(number) == 0) {
+    // System.out.println("yesssss");
+    // valuesResult[0] = a;
+    // valuesResult[1] = b;
+    // valuesResult[2] = count;
+    // return valuesResult;
+    // }
+    // b = b.add(sum);
+    // count++;
+    // result = a.multiply(b);
+    // System.out.println(n);
+    // System.out.println(result);
+    // System.out.println(a);
+    // System.out.println(b);
+    // System.out.println(count);
+    // System.out.println("------");
+
+    // }
+    // }
+    // return valuesResult;
+    // }
+
     public Object bruteForce(BigInteger number) {
         int count = 0;
         Object valuesResult[] = new Object[3];
@@ -165,10 +198,12 @@ public class Cryptography {
         BigInteger b = new BigInteger("3");
         BigInteger sum = new BigInteger("2");
         BigInteger result = new BigInteger("1");
-        while (a.compareTo(number.sqrt()) == -1) {
-            a = a.add(sum);
+        while (a.compareTo(number) < 1) {
+            
             b = new BigInteger("3");
-            while (b.compareTo(number.sqrt()) == -1) {
+            result = new BigInteger("1");
+            while (result.compareTo(number) < 1) {
+
                 if (result.compareTo(number) == 0) {
                     System.out.println("yesssss");
                     valuesResult[0] = a;
@@ -179,6 +214,7 @@ public class Cryptography {
                 b = b.add(sum);
                 count++;
                 result = a.multiply(b);
+
                 System.out.println(n);
                 System.out.println(result);
                 System.out.println(a);
@@ -187,6 +223,7 @@ public class Cryptography {
                 System.out.println("------");
 
             }
+            a = a.add(sum);
         }
         return valuesResult;
     }

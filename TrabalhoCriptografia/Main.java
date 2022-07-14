@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
         Cryptography cripto = new Cryptography();
-        cripto.criptic(16);
+        cripto.criptic(6);
         cripto.bruteForce(cripto.getN());
     }
 }
