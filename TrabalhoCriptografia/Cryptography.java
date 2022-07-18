@@ -68,21 +68,32 @@ public class Cryptography {
 
     private BigInteger encode(BigInteger m) {
         BigInteger c;
+        
+        long start = System.currentTimeMillis();
 
         c = m.modPow(e, n);
 
+        long elapsed = System.currentTimeMillis() - start;
+        System.out.println("Tempo encode:"+elapsed+"ms");
         return c;
     }
 
     private BigInteger decode(BigInteger c) {
         BigInteger m;
 
+        long start = System.currentTimeMillis();
+
         m = c.modPow(d, n);
+
+        long elapsed = System.currentTimeMillis() - start;
+        System.out.println("Tempo decode:"+elapsed+"ms");
 
         return m;
     }
 
     private void keyGenerator(int bitlen) {
+
+        long start = System.currentTimeMillis();
 
         setP(generateRandomPrime(bitlen / 2));
         setQ(generateRandomPrime(bitlen / 2));
@@ -102,6 +113,9 @@ public class Cryptography {
         // System.out.println("p:" + p );
         // System.out.println("q:" + q );
         // System.out.println("e:" + e );
+
+        long elapsed = System.currentTimeMillis() - start;
+        System.out.println("Tempo keyGen:"+elapsed+"ms");
     }
 
     private BigInteger generateRandomPrime(int bitlen) {
@@ -182,9 +196,12 @@ public class Cryptography {
                     valuesResult[0] = a;
                     valuesResult[1] = b;
                     valuesResult[2] = count;
+                    long start = System.currentTimeMillis();
                     System.out.println("------------------");
                     System.out.println(n+" = "+a+"*"+b);
                     System.out.println("Achou em "+count+" iterações");
+                    long elapsed = System.currentTimeMillis() - start;
+                    System.out.println("Tempo Força Bruta:"+elapsed+"ms");
                     System.out.println("------------------");
                     return valuesResult;
                 }
